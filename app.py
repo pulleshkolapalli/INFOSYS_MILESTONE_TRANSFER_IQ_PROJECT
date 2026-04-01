@@ -47,10 +47,15 @@ if st.session_state.dark_mode:
         h1, h2, h3, h4, h5, h6 { color: #ffffff !important; font-weight: 800 !important; }
         .stMarkdown p, .stMarkdown span, .stMarkdown li { color: #e2e8f0 !important; }
         
-        /* SELECTBOX FIX */
-        div[data-baseweb="select"] { background-color: #1e293b !important; border-radius: 8px !important; }
-        div[data-baseweb="select"] * { color: #ffffff !important; }
+        /* SELECTBOX FIX - High Visibility */
+        .stSelectbox [data-baseweb="select"] { background-color: #1e293b !important; color: #ffffff !important; }
+        .stSelectbox div[data-baseweb="select"] { background-color: #1e293b !important; }
+        .stSelectbox div[role="button"] { color: #ffffff !important; font-weight: 600 !important; }
         .stSelectbox label { color: #ffffff !important; font-weight: 600 !important; }
+        div[role="listbox"] { background-color: #1e293b !important; }
+        div[role="option"] { color: #ffffff !important; }
+        div[role="option"]:hover { background-color: #3b82f6 !important; }
+        input[aria-autocomplete="list"] { background-color: #1e293b !important; color: #ffffff !important; }
 
         hr { border-color: #334155 !important; margin: 2rem 0 !important; }
         div[data-testid="stExpander"] { background-color: #1e293b; border: 1px solid #334155; }
