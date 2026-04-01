@@ -39,30 +39,31 @@ if st.session_state.dark_mode:
         .stMetric [data-testid="stMetricValue"] { color: #ffffff !important; font-weight: 800 !important; }
         .stMetric [data-testid="stMetricLabel"] { color: #f1f5f9 !important; font-weight: 500 !important; font-size: 1.1rem !important; }
         
-        /* Headers - Pure white for maximum visibility */
+        /* Headers - Adjusted for responsiveness */
         .main-header { 
-            font-size: 3.5rem; font-weight: 900; text-align: center; padding: 2rem;
+            font-size: 2.8rem; font-weight: 900; text-align: center; padding: 1.5rem 0; width: 100%;
             background: linear-gradient(90deg, #93c5fd 0%, #3b82f6 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        h1, h2, h3, h4, h5, h6 { color: #ffffff !important; font-weight: 800 !important; margin-top: 1.5rem !important; }
-        .stMarkdown p, .stMarkdown span, .stMarkdown li { color: #e2e8f0 !important; font-size: 1.05rem; }
+        h1, h2, h3, h4, h5, h6 { color: #ffffff !important; font-weight: 800 !important; }
+        .stMarkdown p, .stMarkdown span, .stMarkdown li { color: #e2e8f0 !important; }
         
-        /* Tabs - High Visibility */
-        div[data-testid="stTabs"] button { color: #cbd5e1 !important; font-size: 1.1rem !important; font-weight: 600 !important; }
-        div[data-testid="stTabs"] button[aria-selected="true"] { color: #3b82f6 !important; border-bottom: 3px solid #3b82f6 !important; background-color: rgba(59, 130, 246, 0.1) !important; }
-        div[data-testid="stTabs"] p { color: inherit !important; }
+        /* Tabs */
+        div[data-testid="stTabs"] button { color: #cbd5e1 !important; font-size: 1.1rem !important; }
+        div[data-testid="stTabs"] button[aria-selected="true"] { color: #3b82f6 !important; border-bottom: 3px solid #3b82f6 !important; }
+        
+        /* SELECTBOX FIX - More aggressive targeting */
+        div[data-baseweb="select"] { background-color: #1e293b !important; border-radius: 8px !important; }
+        div[data-baseweb="select"] * { color: #ffffff !important; }
+        .stSelectbox label { color: #ffffff !important; font-weight: 600 !important; }
+        div[role="listbox"] { background-color: #1e293b !important; }
+        div[role="option"] { color: #ffffff !important; }
+        div[role="option"]:hover { background-color: #3b82f6 !important; }
 
         hr { border-color: #334155 !important; margin: 2rem 0 !important; }
-        div[data-testid="stExpander"] { background-color: #1e293b; border: 1px solid #334155; border-radius: 10px; }
-        .stButton>button { border-radius: 8px; background: #3b82f6; color: white; border: none; font-weight: 600; padding: 0.6rem 1.2rem; }
-        .stButton>button:hover { background: #2563eb; color: white; box-shadow: 0 0 10px rgba(59,130,246,0.5); }
-        .stSelectbox div[data-baseweb="select"] { background-color: #1e293b !important; color: white !important; border: 1px solid #334155 !important; }
-        .stSelectbox label { color: #ffffff !important; font-weight: 600 !important; }
+        div[data-testid="stExpander"] { background-color: #1e293b; border: 1px solid #334155; }
+        .stButton>button { border-radius: 8px; background: #3b82f6; color: white; border: none; font-weight: 600; }
         footer {visibility: hidden;}
-        
-        /* Plotly fixes for dark background */
-        .js-plotly-plot .plotly .modebar { background-color: transparent !important; }
     </style>
     """, unsafe_allow_html=True)
 else:
@@ -158,18 +159,18 @@ with st.sidebar:
     st.caption(f"Compound: {sentiment_score:.3f}")
 
 # Main content
-# Theme Toggle and Header in columns
-head_col1, head_col2 = st.columns([12, 1])
-with head_col1:
-    st.markdown('<h1 class="main-header">⚽ TransferIQ: AI-Powered Football Player Transfer Valuation</h1>', unsafe_allow_html=True)
+# Theme Toggle and Header in symmetric columns
+head_col1, head_col2, head_col3 = st.columns([1, 18, 1])
 with head_col2:
+    st.markdown('<h1 class="main-header">⚽ TransferIQ: AI-Powered Football Player Transfer Valuation</h1>', unsafe_allow_html=True)
+with head_col3:
     # Transparent styling for toggle button
     theme_icon = "🌙" if not st.session_state.dark_mode else "☀️"
     if st.button(theme_icon, help="Toggle Light/Dark Mode"):
         st.session_state.dark_mode = not st.session_state.dark_mode
         st.rerun()
 
-st.markdown(f"## 🎯 Analyzing: **{selected_player}**")
+st.markdown(f"## 🎯 Analyzing: <span style='color: white;'>{selected_player}</span>", unsafe_allow_html=True)
 
 # Key Metrics Row
 st.markdown("### 📊 Key Performance Indicators")

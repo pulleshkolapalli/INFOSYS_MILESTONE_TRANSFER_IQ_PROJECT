@@ -40,10 +40,10 @@ if st.session_state.dark_mode:
 
 st.set_page_config(page_title="Week 5-7: Model Development", page_icon="🤖", layout="wide")
 
-head_col1, head_col2 = st.columns([12, 1])
-with head_col1:
-    st.title("🤖 Week 5-7: Football AI Model Development & Evaluation")
+head_col1, head_col2, head_col3 = st.columns([1, 15, 1])
 with head_col2:
+    st.title("🤖 Week 5-7: Football AI Model Development & Evaluation")
+with head_col3:
     if st.button("🌙" if not st.session_state.dark_mode else "☀️"):
         st.session_state.dark_mode = not st.session_state.dark_mode
         st.rerun()
