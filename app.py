@@ -27,23 +27,38 @@ if st.session_state.dark_mode:
     <style>
         [data-testid="stAppViewContainer"] { background-color: #0f172a; color: #f8fafc; }
         [data-testid="stHeader"] { background-color: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); }
-        [data-testid="stSidebar"] { background-color: #1e293b !important; }
-        div[data-testid="stSidebarNav"] { background-color: transparent !important; }
+        [data-testid="stSidebar"] { background-color: #1e293b !important; border-right: 1px solid #334155; }
+        
+        /* Sidebar text and nav */
+        [data-testid="stSidebar"] * { color: #f1f5f9 !important; }
+        div[data-testid="stSidebarNav"] a span { color: #f8fafc !important; font-weight: 500; }
+        div[data-testid="stSidebarNav"] a:hover { background-color: #334155 !important; }
+        
+        /* Metrics */
         .stMetric { background-color: #1e293b !important; color: white !important; border: 1px solid #334155 !important; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important; }
         .stMetric [data-testid="stMetricValue"] { color: #3b82f6 !important; }
         .stMetric [data-testid="stMetricLabel"] { color: #94a3b8 !important; }
+        
+        /* Main header and generic headings */
         .main-header { 
             font-size: 3rem; font-weight: 800; text-align: center; padding: 1.5rem;
             background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         h1, h2, h3, h4, h5, h6 { color: #f1f5f9 !important; font-weight: 700 !important; }
-        .stMarkdown p { color: #cbd5e1 !important; }
+        .stMarkdown p, .stMarkdown span { color: #cbd5e1 !important; }
+        
+        /* Tabs */
+        div[data-testid="stTabs"] button { color: #94a3b8 !important; }
+        div[data-testid="stTabs"] button[aria-selected="true"] { color: #3b82f6 !important; border-bottom: 2px solid #3b82f6 !important; }
+        div[data-testid="stTabs"] p { color: inherit !important; }
+
         hr { border-color: #334155 !important; }
         div[data-testid="stExpander"] { background-color: #1e293b; border: 1px solid #334155; }
         .stButton>button { border-radius: 8px; background: #3b82f6; color: white; border: none; font-weight: 600; padding: 0.5rem 1rem; }
         .stButton>button:hover { background: #2563eb; color: white; }
-        .stSelectbox div[data-baseweb="select"] { background-color: #1e293b; color: white; }
+        .stSelectbox div[data-baseweb="select"] { background-color: #1e293b !important; color: white !important; }
+        .stSelectbox label { color: #f1f5f9 !important; }
         footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
