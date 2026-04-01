@@ -93,22 +93,48 @@ with st.sidebar:
     
     st.markdown("---")
     st.markdown("### 📊 Player Information")
-    st.metric("Club", latest_data['team'])
-    st.metric("Position", latest_data['position'])
-    st.metric("Age", int(latest_data['current_age']))
-    st.metric("Value", f"€{latest_data['market_value_eur']/1e6:.1f}M")
-    st.markdown("---")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Club", latest_data['team'])
+        st.metric("Age", int(latest_data['current_age']))
+    with col2:
+        st.metric("Position", latest_data['position'])
+        st.metric("Value", f"€{latest_data['market_value_eur']/1e6:.1f}M")
     
+    st.markdown("---")
+    st.markdown("### 🏥 Injury & Availability")
+    col3, col4 = st.columns(2)
+    with col3:
+        st.metric("Total Injuries", int(latest_data['total_injuries']))
+        st.metric("Missed", int(latest_data['total_matches_missed']))
+    with col4:
+        st.metric("Days Out", int(latest_data['total_days_injured']))
+        st.metric("Rate", f"{latest_data['availability_rate']*100:.1f}%")
+
+    st.markdown("---")
+    st.markdown("### 📈 Latest Statistics")
+    
+    col_s1, col_s2 = st.columns(2)
+    with col_s1:
+        st.metric("Goals", int(latest_data['goals']))
+        st.metric("Assists", int(latest_data['assists']))
+    with col_s2:
+        st.metric("Matches", int(latest_data['matches']))
+        st.metric("Minutes", int(latest_data['minutes_played']))
+    
+    st.markdown("---")
+    st.markdown("### 🎭 Sentiment Score")
     sentiment_score = latest_data['vader_compound_score']
     sentiment_label = latest_data['sentiment_label']
     if sentiment_label == 'Positive': st.success(f"✅ {sentiment_label}")
     elif sentiment_label == 'Negative': st.error(f"❌ {sentiment_label}")
     else: st.info(f"➖ {sentiment_label}")
+    st.progress(max(0, min(1, (sentiment_score + 1) / 2)))
 
 # Header
 head_col1, head_col2, head_col3 = st.columns([1, 18, 1])
 with head_col2:
-    st.markdown('<h1 class="main-header">⚽ TransferIQ: AI-Powered Football Player Valuation System</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">⚽ TransferIQ: AI-Powered Football Player Valuation</h1>', unsafe_allow_html=True)
 with head_col3:
     if st.button("🌙" if not st.session_state.dark_mode else "☀️"):
         st.session_state.dark_mode = not st.session_state.dark_mode
@@ -117,7 +143,6 @@ with head_col3:
 st.markdown(f"## 🎯 Analyzing: <span style='color: white;'>{selected_player}</span>", unsafe_allow_html=True)
 
 # Key Metrics Row
-st.markdown("### 📊 Key Performance Indicators")
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1: st.metric("Market Value", f"€{latest_data['market_value_eur']/1e6:.1f}M")
 with col2: st.metric("Goals/90", f"{latest_data['goals_per90']:.2f}")
@@ -127,7 +152,7 @@ with col5: st.metric("Sentiment", sentiment_label, delta=f"{sentiment_score:.2f}
 
 st.markdown("---")
 
-# Row 1: Trend Graphs
+# Visualizations
 col1, col2 = st.columns(2)
 with col1:
     st.markdown("### 💰 Market Value Development")
@@ -146,9 +171,9 @@ with col2:
 
 st.markdown("---")
 
-# Row 2: Performance (THE REQUESTED ONES)
-col1, col2 = st.columns(2)
-with col1:
+# Performance Charts
+col_p1, col_p2 = st.columns(2)
+with col_p1:
     st.markdown("### ⚽ Performance Metrics Over Time")
     fig3 = make_subplots(rows=2, cols=1, subplot_titles=('Goals & Assists', 'Matches Played'))
     fig3.add_trace(go.Bar(x=player_df['season'], y=player_df['goals'], name='Goals', marker_color='#3b82f6'), row=1, col=1)
@@ -157,11 +182,10 @@ with col1:
     fig3.update_layout(height=500, template='plotly_white', barmode='group')
     st.plotly_chart(fig3, use_container_width=True)
 
-with col2:
+with col_p2:
     st.markdown("### 🎯 Performance Radar Chart")
     categories = ['Goals/90', 'Assists/90', 'Pass Accuracy', 'Shot Conversion', 'Tackle Success']
-    vals = [latest_data['goals_per90']*10, latest_data['assists_per90']*10, latest_data['pass_accuracy_pct'], 
-            latest_data['shot_conversion_rate']*100, latest_data['tackle_success_rate']*100]
+    vals = [latest_data['goals_per90']*10, latest_data['assists_per90']*10, latest_data['pass_accuracy_pct'], latest_data['shot_conversion_rate']*100, latest_data['tackle_success_rate']*100]
     fig4 = go.Figure()
     fig4.add_trace(go.Scatterpolar(r=vals, theta=categories, fill='toself', name=selected_player, fillcolor='rgba(59, 130, 246, 0.4)'))
     fig4.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])), height=500, template='plotly_white')
@@ -169,15 +193,12 @@ with col2:
 
 st.markdown("---")
 
-# Row 3: AI Models
+# AI Models
 st.markdown("### 🤖 Ensemble AI Model Valuation Analysis")
 col1, col2 = st.columns([2, 1])
 with col1:
     curr = latest_data['market_value_eur'] / 1e6
-    pred_df = pd.DataFrame({
-        'Model': ['LSTM', 'Multi-LSTM', 'XGBoost', 'LightGBM', 'Final Ensemble'],
-        'Value': [curr*0.92, curr*0.96, curr*0.99, curr*1.02, curr*1.00]
-    })
+    pred_df = pd.DataFrame({'Model': ['LSTM', 'Multi-LSTM', 'XGBoost', 'Final Ensemble'], 'Value': [curr*0.92, curr*0.96, curr*0.99, curr*1.00]})
     fig_ai = px.bar(pred_df, x='Model', y='Value', color='Model', text='Value')
     fig_ai.update_traces(texttemplate='€%{text:.1f}M', textposition='outside')
     fig_ai.add_hline(y=curr, line_dash="dash", line_color="red")
@@ -189,18 +210,13 @@ with col2:
     fig_acc = px.bar(acc_df, x='Model', y='Accuracy', color='Model', range_y=[0, 1], title='Model R² Comparison')
     st.plotly_chart(fig_acc, use_container_width=True)
 
+# Gauges
 st.markdown("---")
-
-# Row 4: Gauges
 col_a, col_b, col_c = st.columns(3)
-with col_a:
-    st.plotly_chart(go.Figure(go.Indicator(mode="gauge+number", value=latest_data['pass_accuracy_pct'], title={'text': "Pass %"}, gauge={'axis': {'range': [0, 100]}, 'bar': {'color': "#3b82f6"}})).update_layout(height=280), use_container_width=True)
-with col_b:
-    st.plotly_chart(go.Figure(go.Indicator(mode="gauge+number", value=latest_data['goal_contributions_per90'], title={'text': "Contrib/90"}, gauge={'axis': {'range': [0, 2]}, 'bar': {'color': "#10b981"}})).update_layout(height=280), use_container_width=True)
-with col_c:
-    counts = player_df['sentiment_label'].value_counts()
-    st.plotly_chart(px.pie(values=counts.values, names=counts.index, hole=.4, title="Sentiment Mix").update_layout(height=280), use_container_width=True)
+with col_a: st.plotly_chart(go.Figure(go.Indicator(mode="gauge+number", value=latest_data['pass_accuracy_pct'], title={'text': "Pass %"}, gauge={'axis': {'range': [0, 100]}, 'bar': {'color': "#3b82f6"}})).update_layout(height=280), use_container_width=True)
+with col_b: st.plotly_chart(go.Figure(go.Indicator(mode="gauge+number", value=latest_data['goal_contributions_per90'], title={'text': "Contrib/90"}, gauge={'axis': {'range': [0, 2]}, 'bar': {'color': "#10b981"}})).update_layout(height=280), use_container_width=True)
+with col_c: st.plotly_chart(px.pie(values=player_df['sentiment_label'].value_counts().values, names=player_df['sentiment_label'].value_counts().index, hole=.4, title="Sentiment Mix").update_layout(height=280), use_container_width=True)
 
 # Footer
 st.markdown("---")
-st.markdown("<div style='text-align: center; color: #6b7280; padding: 2rem;'><h4>🎓 TransferIQ: AI-Powered Football Data Platform</h4><p>Ensemble Learning | NLP Sentiment Analytics | Real-Time Predictions</p></div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align: center; color: #6b7280;'><h4>🎓 TransferIQ: AI-Powered Football Data Platform</h4><p>Ensemble Meta-Learning | NLP Analytics | © 2026</p></div>", unsafe_allow_html=True)
