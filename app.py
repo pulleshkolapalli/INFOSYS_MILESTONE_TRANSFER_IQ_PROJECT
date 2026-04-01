@@ -31,35 +31,38 @@ if st.session_state.dark_mode:
         
         /* Sidebar text and nav */
         [data-testid="stSidebar"] * { color: #f1f5f9 !important; }
-        div[data-testid="stSidebarNav"] a span { color: #f8fafc !important; font-weight: 500; }
+        div[data-testid="stSidebarNav"] a span { color: #f8fafc !important; font-weight: 600; }
         div[data-testid="stSidebarNav"] a:hover { background-color: #334155 !important; }
         
-        /* Metrics */
-        .stMetric { background-color: #1e293b !important; color: white !important; border: 1px solid #334155 !important; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important; }
-        .stMetric [data-testid="stMetricValue"] { color: #3b82f6 !important; }
-        .stMetric [data-testid="stMetricLabel"] { color: #94a3b8 !important; }
+        /* Metrics - Super clear contrast */
+        .stMetric { background-color: #1e293b !important; color: white !important; border: 1px solid #3b82f6 !important; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3) !important; border-radius: 12px !important; }
+        .stMetric [data-testid="stMetricValue"] { color: #ffffff !important; font-weight: 800 !important; }
+        .stMetric [data-testid="stMetricLabel"] { color: #f1f5f9 !important; font-weight: 500 !important; font-size: 1.1rem !important; }
         
-        /* Main header and generic headings */
+        /* Headers - Pure white for maximum visibility */
         .main-header { 
-            font-size: 3rem; font-weight: 800; text-align: center; padding: 1.5rem;
-            background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 100%);
+            font-size: 3.5rem; font-weight: 900; text-align: center; padding: 2rem;
+            background: linear-gradient(90deg, #93c5fd 0%, #3b82f6 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        h1, h2, h3, h4, h5, h6 { color: #f1f5f9 !important; font-weight: 700 !important; }
-        .stMarkdown p, .stMarkdown span { color: #cbd5e1 !important; }
+        h1, h2, h3, h4, h5, h6 { color: #ffffff !important; font-weight: 800 !important; margin-top: 1.5rem !important; }
+        .stMarkdown p, .stMarkdown span, .stMarkdown li { color: #e2e8f0 !important; font-size: 1.05rem; }
         
-        /* Tabs */
-        div[data-testid="stTabs"] button { color: #94a3b8 !important; }
-        div[data-testid="stTabs"] button[aria-selected="true"] { color: #3b82f6 !important; border-bottom: 2px solid #3b82f6 !important; }
+        /* Tabs - High Visibility */
+        div[data-testid="stTabs"] button { color: #cbd5e1 !important; font-size: 1.1rem !important; font-weight: 600 !important; }
+        div[data-testid="stTabs"] button[aria-selected="true"] { color: #3b82f6 !important; border-bottom: 3px solid #3b82f6 !important; background-color: rgba(59, 130, 246, 0.1) !important; }
         div[data-testid="stTabs"] p { color: inherit !important; }
 
-        hr { border-color: #334155 !important; }
-        div[data-testid="stExpander"] { background-color: #1e293b; border: 1px solid #334155; }
-        .stButton>button { border-radius: 8px; background: #3b82f6; color: white; border: none; font-weight: 600; padding: 0.5rem 1rem; }
-        .stButton>button:hover { background: #2563eb; color: white; }
-        .stSelectbox div[data-baseweb="select"] { background-color: #1e293b !important; color: white !important; }
-        .stSelectbox label { color: #f1f5f9 !important; }
+        hr { border-color: #334155 !important; margin: 2rem 0 !important; }
+        div[data-testid="stExpander"] { background-color: #1e293b; border: 1px solid #334155; border-radius: 10px; }
+        .stButton>button { border-radius: 8px; background: #3b82f6; color: white; border: none; font-weight: 600; padding: 0.6rem 1.2rem; }
+        .stButton>button:hover { background: #2563eb; color: white; box-shadow: 0 0 10px rgba(59,130,246,0.5); }
+        .stSelectbox div[data-baseweb="select"] { background-color: #1e293b !important; color: white !important; border: 1px solid #334155 !important; }
+        .stSelectbox label { color: #ffffff !important; font-weight: 600 !important; }
         footer {visibility: hidden;}
+        
+        /* Plotly fixes for dark background */
+        .js-plotly-plot .plotly .modebar { background-color: transparent !important; }
     </style>
     """, unsafe_allow_html=True)
 else:

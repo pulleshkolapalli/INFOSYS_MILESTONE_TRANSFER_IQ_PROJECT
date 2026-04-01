@@ -15,17 +15,24 @@ if st.session_state.dark_mode:
     <style>
         [data-testid="stAppViewContainer"] { background-color: #0f172a; color: #f8fafc; }
         [data-testid="stHeader"] { background-color: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); }
-        [data-testid="stSidebar"] { background-color: #1e293b !important; }
+        [data-testid="stSidebar"] { background-color: #1e293b !important; border-right: 1px solid #334155; }
         [data-testid="stSidebar"] * { color: #f1f5f9 !important; }
-        div[data-testid="stSidebarNav"] a span { color: #f8fafc !important; }
+        div[data-testid="stSidebarNav"] a span { color: #f8fafc !important; font-weight: 600; }
         
-        div[data-testid="stTabs"] button { color: #94a3b8 !important; }
-        div[data-testid="stTabs"] button[aria-selected="true"] { color: #3b82f6 !important; border-bottom: 2px solid #3b82f6 !important; }
+        /* Metrics - Super clear contrast */
+        .stMetric { background-color: #1e293b !important; color: white !important; border: 1px solid #3b82f6 !important; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3) !important; border-radius: 12px !important; }
+        .stMetric [data-testid="stMetricValue"] { color: #ffffff !important; font-weight: 800 !important; }
+        .stMetric [data-testid="stMetricLabel"] { color: #f1f5f9 !important; font-weight: 500 !important; font-size: 1.1rem !important; }
+        
+        /* Headers */
+        h1, h2, h3, h4, h5, h6 { color: #ffffff !important; font-weight: 800 !important; }
+        .stMarkdown p, .stMarkdown span, .stMarkdown li { color: #e2e8f0 !important; }
+        
+        /* Tabs */
+        div[data-testid="stTabs"] button { color: #cbd5e1 !important; font-size: 1.1rem !important; }
+        div[data-testid="stTabs"] button[aria-selected="true"] { color: #3b82f6 !important; border-bottom: 3px solid #3b82f6 !important; }
         div[data-testid="stTabs"] p { color: inherit !important; }
 
-        .stMetric { background-color: #1e293b !important; color: white !important; border: 1px solid #334155 !important; }
-        h1, h2, h3, h4, h5, h6 { color: #f1f5f9 !important; }
-        .stMarkdown p, .stMarkdown span { color: #cbd5e1 !important; }
         .stButton>button { border-radius: 8px; background: #3b82f6; color: white; border: none; }
         footer {visibility: hidden;}
     </style>
