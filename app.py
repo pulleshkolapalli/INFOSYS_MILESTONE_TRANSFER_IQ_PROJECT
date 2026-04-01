@@ -8,6 +8,10 @@ from datetime import datetime
 import warnings
 warnings.filterwarnings('ignore')
 
+# Theme state initialization
+if 'dark_mode' not in st.session_state:
+    st.session_state.dark_mode = False
+
 # Page config
 st.set_page_config(
     page_title="TransferIQ - AI Football Player Valuation",
@@ -16,39 +20,47 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
-st.markdown("""
-<style>
-    .main-header {
-        font-size: 3rem;
-        font-weight: bold;
-        background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-align: center;
-        padding: 1rem;
-    }
-    .metric-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 1.5rem;
-        border-radius: 10px;
-        color: white;
-        text-align: center;
-    }
-    .stMetric {
-        background-color: #f8f9fa;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .sidebar .sidebar-content {
-        background: linear-gradient(180deg, #1e3a8a 0%, #3b82f6 100%);
-    }
-    div[data-testid="stSidebarNav"] {
-        background-color: #f0f2f6;
-    }
-</style>
-""", unsafe_allow_html=True)
+# Custom Theme Styling
+if st.session_state.dark_mode:
+    # DARK MODE CSS
+    st.markdown("""
+    <style>
+        [data-testid="stAppViewContainer"] { background-color: #0f172a; color: #f8fafc; }
+        [data-testid="stHeader"] { background-color: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); }
+        [data-testid="stSidebar"] { background-color: #1e293b !important; }
+        div[data-testid="stSidebarNav"] { background-color: transparent !important; }
+        .stMetric { background-color: #1e293b !important; color: white !important; border: 1px solid #334155 !important; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important; }
+        .stMetric [data-testid="stMetricValue"] { color: #3b82f6 !important; }
+        .stMetric [data-testid="stMetricLabel"] { color: #94a3b8 !important; }
+        .main-header { 
+            font-size: 3rem; font-weight: 800; text-align: center; padding: 1.5rem;
+            background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        h1, h2, h3, h4, h5, h6 { color: #f1f5f9 !important; font-weight: 700 !important; }
+        .stMarkdown p { color: #cbd5e1 !important; }
+        hr { border-color: #334155 !important; }
+        div[data-testid="stExpander"] { background-color: #1e293b; border: 1px solid #334155; }
+        .stButton>button { border-radius: 8px; background: #3b82f6; color: white; border: none; font-weight: 600; padding: 0.5rem 1rem; }
+        .stButton>button:hover { background: #2563eb; color: white; }
+        .stSelectbox div[data-baseweb="select"] { background-color: #1e293b; color: white; }
+        footer {visibility: hidden;}
+    </style>
+    """, unsafe_allow_html=True)
+else:
+    # LIGHT MODE CSS
+    st.markdown("""
+    <style>
+        .main-header {
+            font-size: 3rem; font-weight: 800; text-align: center; padding: 1.5rem;
+            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .stMetric { background-color: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .metric-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem; border-radius: 10px; color: white; text-align: center; }
+        footer {visibility: hidden;}
+    </style>
+    """, unsafe_allow_html=True)
 
 # Load data function with caching
 @st.cache_data
@@ -128,7 +140,17 @@ with st.sidebar:
     st.caption(f"Compound: {sentiment_score:.3f}")
 
 # Main content
-st.markdown('<h1 class="main-header">⚽ TransferIQ: AI-Powered Football Player Transfer Valuation</h1>', unsafe_allow_html=True)
+# Theme Toggle and Header in columns
+head_col1, head_col2 = st.columns([12, 1])
+with head_col1:
+    st.markdown('<h1 class="main-header">⚽ TransferIQ: AI-Powered Football Player Transfer Valuation</h1>', unsafe_allow_html=True)
+with head_col2:
+    # Transparent styling for toggle button
+    theme_icon = "🌙" if not st.session_state.dark_mode else "☀️"
+    if st.button(theme_icon, help="Toggle Light/Dark Mode"):
+        st.session_state.dark_mode = not st.session_state.dark_mode
+        st.rerun()
+
 st.markdown(f"## 🎯 Analyzing: **{selected_player}**")
 
 # Key Metrics Row

@@ -5,9 +5,35 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import numpy as np
 
+# Theme state initialization
+if 'dark_mode' not in st.session_state:
+    st.session_state.dark_mode = False
+
+# Custom Theme Styling
+if st.session_state.dark_mode:
+    st.markdown("""
+    <style>
+        [data-testid="stAppViewContainer"] { background-color: #0f172a; color: #f8fafc; }
+        [data-testid="stHeader"] { background-color: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); }
+        [data-testid="stSidebar"] { background-color: #1e293b !important; }
+        .stMetric { background-color: #1e293b !important; color: white !important; border: 1px solid #334155 !important; }
+        h1, h2, h3, h4, h5, h6 { color: #f1f5f9 !important; }
+        .stMarkdown p { color: #cbd5e1 !important; }
+        .stButton>button { border-radius: 8px; background: #3b82f6; color: white; border: none; }
+        footer {visibility: hidden;}
+    </style>
+    """, unsafe_allow_html=True)
+
 st.set_page_config(page_title="Week 1-2: Data Exploration", page_icon="📊", layout="wide")
 
-st.title("📊 Week 1-2: Football Data Collection & Preprocessing")
+head_col1, head_col2 = st.columns([12, 1])
+with head_col1:
+    st.title("📊 Week 1-2: Football Data Collection & Preprocessing")
+with head_col2:
+    if st.button("🌙" if not st.session_state.dark_mode else "☀️"):
+        st.session_state.dark_mode = not st.session_state.dark_mode
+        st.rerun()
+
 st.markdown("### Milestone 1 & 2: Data Exploration and Feature Engineering")
 
 # Load data
